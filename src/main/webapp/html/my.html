@@ -23,6 +23,8 @@
     </tr>
 </table>
 
+<div id="paging_buttons">Pages:</div>
+
 <script>
     function show_list(page_number) {
         $("tr:has(td)").remove();
@@ -80,12 +82,24 @@
             $('#paging_buttons').append(btn);
 
         }
-
         let identifier = "#paging_button_" + page_number;
         $(identifier).css("color", "green");
-
-
     }
+
+    function getTotalCount() {
+        let url = "/rest/players/count";
+        let res = 0;
+        $.ajax({
+            url: url,
+            async: false,
+            success: function (result) {
+                res = parseInt(result);
+            }
+        })
+        return res;
+    }
+
+
 </script>
 
 </body>
