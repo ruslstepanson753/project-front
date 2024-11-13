@@ -16,11 +16,10 @@
 
             <label for="countsOnPage" onchange="getPlayers(0)"> Count per page:
                 <select id="countsOnPage">
-                    <option value="7">7</option>
+                    <option value="5">7</option>
                     <option value="10">10</option>
                     <option value="15">15</option>
                     <option value="20">20</option>
-                    <option value="30">30</option>
                 </select>
             </label>
 
@@ -141,7 +140,6 @@
             pageNumber = 0;
         }
 
-
         url = url.concat('&pageNumber=').concat(pageNumber);
 
         $.get(url, function (data) {
@@ -171,7 +169,6 @@
         var pagesCount = Math.ceil(players / countsPerPages);
 
         $('button.pagingButtonClass').remove();
-        // добавление кнопок
         for (var i = 0; i < pagesCount; i++) {
             var button = $('<button type="button" class="btn btn-outline-primary" >' + (i + 1) + '</button>')
                 .attr('id', "pageButton" + i)
@@ -181,7 +178,7 @@
         }
 
         var pressedButton = "#pageButton" + pageNumber;
-        $(pressedButton).css('background', 'brown')
+        $(pressedButton).css('background', 'yellow')
     }
 
     function deletePlayer(playerId) {
@@ -203,22 +200,17 @@
 
     function editPlayer(playerId, pageNumber) {
         let identifier_edit = "#edit-button" + playerId;
-        // прячем иконку поля delete
         $('#delete-button' + playerId).hide();
-        // заменяем текст edit на save
         var editButton = $('#edit-button' + playerId).html('save');
         let save_image_tag = "<img src='/img/save.png'>";
         $(identifier_edit).html(save_image_tag);
 
         var currentTr = $(editButton).parent().parent();
         var children = currentTr.children();
-        // редактирование поля Name
         var name = children[1];
         name.innerHTML = "<input id='inputName" + playerId + "' type='text' value='" + name.innerHTML + "'>";
-        // редактирование поля Title
         var title = children[2];
         title.innerHTML = "<input id='inputTitle" + playerId + "' type='text' value='" + title.innerHTML + "'>";
-        // редактирование поля Race
         var race = children[3];
         var raceId = "selectRace" + playerId;
         var currentRaceValue = race.innerHTML;
@@ -234,7 +226,6 @@
             + "<option value='HOBBIT'>HOBBIT</option>"
             + "</select>";
         $('#' + raceId).val(currentRaceValue).change();
-        // редактирование поля profession
         var profession = children[4];
         var professionId = "selectProfession" + playerId;
         var currentProfessionValue = profession.innerHTML;
@@ -251,7 +242,6 @@
             + "<option value='DRUID'>DRUID</option>"
             + "</select>";
         $('#' + professionId).val(currentProfessionValue).change();
-        // Редактирование поля banned
         var banned = children[7];
         var bannedId = "selectBanned" + playerId;
         var currentBannedValue = banned.innerHTML;
@@ -359,7 +349,7 @@
         var buttons = $('.btn btn-outline-primary');
 
         for (button of buttons) {
-            if (button.css('background') === 'brown') {
+            if (button.css('background') === 'yellow') {
                 currentPage = button.val();
             }
         }
