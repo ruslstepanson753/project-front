@@ -24,7 +24,68 @@
 </table>
 
 <script>
+    function show_list(page_number) {
+        $("tr:has(td)").remove();
 
+        let url = "/rest/players?";
+
+        let countPerPage = $("#count_1").val();
+        if (countPerPage == null) {
+            countPerPage = 3;
+        }
+
+        url = url.concat("pageSize=").concat(countPerPage);
+
+        if (page_number == null) {
+            page_number = 0;
+        }
+
+        url = url.concat("&pageNumber=").concat(page_number);
+
+
+        $.get(url, function (response) {
+            $.each(response, function (i, item) {
+                $('<tr>').html("<td>"
+                    + item.id + "</td><td>"
+                    + item.name + "</td><td>"
+                    + item.title + "</td><td>"
+                    + item.race + "</td><td>"
+                    + item.profession + "</td><td>"
+                    + item.level + "</td><td>"
+                    + new Date(item.birthday).toLocaleDateString() + "</td><td>"
+                    + item.banned + "</td><td>"
+                    + "<button id='button_edit_" + item.id + "' onclick='editAcc(" + item.id + ")'>"
+                    + "<img src='/img/edit.png'>"
+                    + "</button>" + "</td><td>"
+                    + "<button id='button_delete_" + item.id + "' onclick='deleteAcc(" + item.id + ")'>"
+                    + "<img src='/img/delete.png'>"
+                    + "</button>" + "</td>"
+                ).appendTo("#table_1")
+            });
+        });
+
+        let totalCount = getTotalCount();
+
+
+        let pagesCount = Math.ceil(totalCount / countPerPage);
+
+        $('button.pgn-bnt-styled').remove();
+
+        for (let i = 0; i < pagesCount; i++) {
+            let button_tag = "<button>" + (i + 1) + "</button>";
+            let btn = $(button_tag)
+                .attr('id', "paging_button_" + i)
+                .attr('onclick', "show_list(" + i + ")")
+                .addClass('pgn-bnt-styled');
+            $('#paging_buttons').append(btn);
+
+        }
+
+        let identifier = "#paging_button_" + page_number;
+        $(identifier).css("color", "green");
+
+
+    }
 </script>
 
 </body>
